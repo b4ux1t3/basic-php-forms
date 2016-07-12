@@ -13,26 +13,31 @@
 <body>
 <?php
 if(isset($_POST['submit'])){
+    // Make an array to hold the field names which are empty
     $missingData = array();
 
+    // Check if the username field in the post request is empty
     if(empty($_POST['username'])){
         $missingData[] = 'Username';
     } else {
-        $username = trim($_POST[username]);
+        $username = trim($_POST['username']);
     }
 
+    // Check if the password field in the post request is empty
     if(empty($_POST['password'])){
         $missingData[] = 'Password';
     } else {
-        $password = trim($_POST[password]);
+        $password = trim($_POST['password']);
     }
 
+    // Check if the question field in the post request is empty
     if(empty($_POST['question'])){
         $missingData[] = 'Question';
     } else {
-        $question = trim($_POST[question]);
+        $question = trim($_POST['question']);
     }
 
+    // Check if the answer field in the post request is empty
     if(empty($_POST['answer'])){
         $missingData[] = 'Answer';
     } else {
@@ -41,8 +46,8 @@ if(isset($_POST['submit'])){
 
     if(empty($missingData)){
         require_once('/home/alex/workspace/server/mysqlConnect.php');
-        
-        // Add username to database
+
+        // Add the user to the user database
         $userQuery = "INSERT INTO users (username, id) VALUES(?, NULL)";
         $stmt = mysqli_prepare($dbc, $userQuery);
         mysqli_stmt_bind_param($stmt, "s", $username);
@@ -50,7 +55,7 @@ if(isset($_POST['submit'])){
 
         $affected_rows = mysqli_stmt_affected_rows($stmt);
 
-        if($affected_rows == 1){
+        if ($affected_rows == 1){
             echo '<p>Username entered</p>';
         } else {
             echo '<p>Error occurred when adding username</p>';
@@ -83,10 +88,9 @@ if(isset($_POST['submit'])){
             echo mysqli_error();
             mysqli_stmt_close($stmt);
             // Have to delete the user we just created.
-            $delete = @mysqli_query($dbc, "DELETE FROM users WHERE id = " . $userID);
+            $delete = @mysqli_query($dbc, "DELETE FROM users WHERE id = $userID");
             mysqli_close($dbc);
             die;
-            
         }
         mysqli_stmt_close($stmt);
 
@@ -96,7 +100,7 @@ if(isset($_POST['submit'])){
         mysqli_stmt_bind_param($stmt, "iss", $userID, $question, $answer);
         mysqli_stmt_execute($stmt);
 
-        $affected_rows = mysqli_stmt_affected_rows($stmt);
+         $affected_rows = mysqli_stmt_affected_rows($stmt);
 
         if($affected_rows == 1){
             echo '<p>Secret question and answer entered</p>';
@@ -106,7 +110,7 @@ if(isset($_POST['submit'])){
             mysqli_stmt_close($stmt);
             // Have to delete the user we just created.
             // This should also trigger a delete on the passord.
-            $delete = @mysqli_query($dbc, "DELETE FROM users WHERE id = " . $userID);
+            $delete = @mysqli_query($dbc, "DELETE FROM users WHERE id = $userID");
             mysqli_close($dbc);
             die;
         }
@@ -121,8 +125,8 @@ if(isset($_POST['submit'])){
     }
 }
 ?>
-  <div id="regForm">
-    <form action="reg.php" method="post">
+<div id="regForm">
+    <form action="reg2.php" method="post">
         <p>Desired Username</p>
         <input type="text" name="username" />
         <p>Password</p>
