@@ -126,7 +126,7 @@ if(isset($_POST['submit'])){
 }
 ?>
 <div id="regForm">
-    <form action="reg2.php" method="post">
+    <form action="reg.php" method="post">
         <p>Desired Username</p>
         <input type="text" name="username" />
         <p>Password</p>
